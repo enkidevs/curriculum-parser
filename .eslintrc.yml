@@ -1,0 +1,8 @@
+---
+parser: babel-eslint
+extends:
+  - plugin:import/warnings
+  - plugin:import/errors
+env:
+  browser: true
+  node: true
