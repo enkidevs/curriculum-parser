@@ -1,53 +1,53 @@
 import {
   BLANK_LINE_REGEX,
   SECTION_START_REGEX,
-  ATTRIBUTE_NAME_REGEX
-} from '../utils'
-import * as attributeParser from './attribute'
-import * as headlineParser from './headline'
-import * as sectionParser from './section'
+  ATTRIBUTE_NAME_REGEX,
+} from '../utils';
+import * as attributeParser from '../attribute';
+import * as headlineParser from './headline';
+import * as sectionParser from './section';
 
-export const section = sectionParser
-export const attribute = attributeParser
-export const headline = headlineParser
+export const section = sectionParser;
+export const attribute = attributeParser;
+export const headline = headlineParser;
 
-export function parse (string = '') {
+export function parse(string = '') {
   // normalize linebreaks to \n.
-  string = string.replace(/\r?\n|\r/g, '\n')
+  string = string.replace(/\r?\n|\r/g, '\n');
 
   const ast = {
     type: 'insight',
-    nodes: []
-  }
+    nodes: [],
+  };
 
-  const lines = string.split(/\n/g)
+  const lines = string.split(/\n/g);
 
-  const headlineNode = headlineParser.parse(lines, 0)
-  ast.nodes.push(headlineNode)
+  const headlineNode = headlineParser.parse(lines, 0);
+  ast.nodes.push(headlineNode);
 
   for (let i = headlineNode.position.end.line + 1; i < lines.length; i++) {
-    const line = lines[i]
+    const line = lines[i];
 
     if (BLANK_LINE_REGEX.test(line)) {
-      continue
+      continue;
     }
 
     if (SECTION_START_REGEX.test(line)) {
-      const node = section.parse(lines, i)
-      ast.nodes.push(node)
-      i = node.position.end.line
-      continue
+      const node = section.parse(lines, i);
+      ast.nodes.push(node);
+      i = node.position.end.line;
+      continue;
     }
 
     if (ATTRIBUTE_NAME_REGEX.test(line)) {
-      const node = attribute.parse(lines, i)
-      ast.nodes.push(node)
-      i = node.position.end.line
-      continue
+      const node = attribute.parse(lines, i);
+      ast.nodes.push(node);
+      i = node.position.end.line;
+      continue;
     }
 
-    throw new SyntaxError(`Invalid token on line ${i}: ${line}`)
+    throw new SyntaxError(`Invalid token on line ${i}: ${line}`);
   }
 
-  return ast
+  return ast;
 }
