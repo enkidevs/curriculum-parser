@@ -1,2 +1,0 @@
-#
-author: elmer-fudd
