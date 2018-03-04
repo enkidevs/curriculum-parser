@@ -10,10 +10,13 @@ const folderNames = folderPath =>
 const fixturePath = folderPath =>
   path.join(__dirname, ...folderPath.split('/'), '__tests__', 'fixtures')
 
-export function loadFixtures (folderPath) {
-  const fp = fixturePath(folderPath)
-  const names = folderNames(fp)
-  return names.map(fileName => loadFixture(path.join(fp, fileName)))
+export function loadFixtures (folderPath, { includeInvalid = false } = {}) {
+  const names = folderNames(fixturePath(folderPath))
+  const fixtures = names.map(folderName => loadFixture(folderPath, folderName))
+  if (includeInvalid) {
+    return fixtures
+  }
+  return fixtures.filter(fixture => !fixture.text.startsWith('invalid'))
 }
 
 function loadFile (folderPath = '', name = '') {
@@ -25,18 +28,24 @@ function loadFile (folderPath = '', name = '') {
   }
 }
 
-export function loadFixture (folderPath) {
-  return {
-    text: loadFile(folderPath, 'text.md').toString(),
-    ast: JSON.parse(loadFile(folderPath, 'ast.json'))
+export function loadFixture (folderPath, folderName) {
+  const fp = path.join(fixturePath(folderPath), folderName)
+  const output = {}
+  const textFile = loadFile(fp, 'text.md')
+  if (textFile) {
+    output.text = textFile.toString()
   }
+  const astFile = loadFile(fp, 'ast.json')
+  if (astFile) {
+    output.ast = JSON.parse(astFile)
+  }
+  return output
 }
 
 export function createTest (name, parse, fixtures) {
   jestInCase(
     name,
     fixture => {
-      console.log(JSON.stringify(parse(fixture.text)))
       expect(JSON.parse(JSON.stringify(parse(fixture.text)))).toEqual(
         fixture.ast
       )

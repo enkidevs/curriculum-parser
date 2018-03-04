@@ -18,13 +18,27 @@
     "test:watch": "jest --watchAll",
     "test": "npm run lint && jest --notify"
   },
-  "keywords": ["enki", "curriculum", "parser", "ast"],
-  "pre-commit": ["format", "test"],
-  "files": ["es", "dist"],
+  "keywords": [
+    "enki",
+    "curriculum",
+    "parser",
+    "ast"
+  ],
+  "pre-commit": [
+    "format",
+    "test"
+  ],
+  "files": [
+    "es",
+    "dist"
+  ],
   "author": "Nemanja Stojanovic <me@nem035.com>",
   "lint-staged": {
     "linters": {
-      "src/**/*.js": ["prettier-standard", "git add"]
+      "src/**/*.js": [
+        "prettier-standard",
+        "git add"
+      ]
     }
   },
   "repository": {
@@ -39,9 +53,10 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
-    "babel-jest": "^20.0.3",
+    "babel-jest": "^22.4.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "eslint-plugin-import": "^2.9.0",
     "jest": "^22.4.2",
     "jest-in-case": "^1.0.2",
     "lint-staged": "^7.0.0",

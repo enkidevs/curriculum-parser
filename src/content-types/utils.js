@@ -39,8 +39,6 @@ export function getMarkdownLink (link) {
   }
 }
 
-export const contentLinesToString = contentArr => contentArr.join('\n').trim()
-
 export const HEADLINE_REGEX = /^#\s([^\n]+)/i
 export const SECTION_START_REGEX = /^-{3}/
 export const SECTION_TITLE_REGEX = /^##\s([a-z\s*]+)/i

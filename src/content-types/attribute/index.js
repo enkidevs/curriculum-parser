@@ -1,6 +1,5 @@
 import yaml from 'js-yaml'
 import {
-  contentLinesToString,
   getContentBoundaries,
   getMarkdownLink,
   ATTRIBUTE_NAME_REGEX,
@@ -36,11 +35,7 @@ export function parse (lines, attrNameLineNum) {
       lines[startLineNum].length - lines[startLineNum].trimLeft().length
   }
 
-  const yamlString = contentLinesToString([
-    attrName,
-    attrNameLineValue,
-    ...contentLines
-  ])
+  const yamlString = contentLines.join('\n')
   const parsedValue = yaml.safeLoad(yamlString) || {}
 
   return createNode({
