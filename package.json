@@ -18,13 +18,27 @@
     "test:watch": "jest --watchAll",
     "test": "npm run lint && jest --notify"
   },
-  "keywords": ["enki", "curriculum", "parser", "ast"],
-  "pre-commit": ["format", "test"],
-  "files": ["es", "dist"],
+  "keywords": [
+    "enki",
+    "curriculum",
+    "parser",
+    "ast"
+  ],
+  "pre-commit": [
+    "format",
+    "test"
+  ],
+  "files": [
+    "es",
+    "dist"
+  ],
   "author": "Nemanja Stojanovic <me@nem035.com>",
   "lint-staged": {
     "linters": {
-      "src/**/*.js": ["prettier-standard", "git add"]
+      "src/**/*.js": [
+        "prettier-standard",
+        "git add"
+      ]
     }
   },
   "repository": {
@@ -55,7 +69,10 @@
   },
   "dependencies": {
     "js-yaml": "^3.10.0",
-    "simple-markdown": "^0.3.2"
+    "remark-breaks": "^1.0.0",
+    "remark-parse": "^5.0.0",
+    "unified": "^6.1.6",
+    "unist-util-visit": "^1.3.0"
   },
   "jest": {
     "testRegex": "/src.*__tests__/.*\\.test.js$"

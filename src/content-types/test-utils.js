@@ -1,3 +1,4 @@
+import jestInCase from 'jest-in-case'
 import fs from 'fs'
 import path from 'path'
 
@@ -29,4 +30,17 @@ export function loadFixture (folderPath) {
     text: loadFile(folderPath, 'text.md').toString(),
     ast: JSON.parse(loadFile(folderPath, 'ast.json'))
   }
+}
+
+export function createTest (name, parse, fixtures) {
+  jestInCase(
+    name,
+    fixture => {
+      console.log(JSON.stringify(parse(fixture.text)))
+      expect(JSON.parse(JSON.stringify(parse(fixture.text)))).toEqual(
+        fixture.ast
+      )
+    },
+    fixtures
+  )
 }

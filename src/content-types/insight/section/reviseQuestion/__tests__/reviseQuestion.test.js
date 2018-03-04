@@ -1,15 +1,8 @@
-import jestInCase from 'jest-in-case'
 import { parse } from '../index'
-import { loadFixtures } from '../../../../test_utils'
+import { createTest, loadFixtures } from '../../../../test-utils'
 
-const fixtures = loadFixtures('insight/section/reviseQuestion')
-
-jestInCase(
+createTest(
   'reviseQuestion.parse',
-  fixture => {
-    console.log(fixture.text)
-    console.log(JSON.stringify(parse(fixture.text), null, 2))
-    expect(parse(fixture.text)).toBe(fixture.ast)
-  },
-  fixtures
+  parse,
+  loadFixtures('insight/section/reviseQuestion')
 )

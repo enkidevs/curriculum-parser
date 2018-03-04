@@ -11,7 +11,7 @@ export const section = sectionParser
 export const attribute = attributeParser
 export const headline = headlineParser
 
-export function parse (string = '', rules) {
+export function parse (string = '') {
   // normalize linebreaks to \n.
   string = string.replace(/\r?\n|\r/g, '\n')
 
