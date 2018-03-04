@@ -1,4 +1,4 @@
-import snakecase from 'lodash.snakecase';
+import snakecase from 'lodash.snakecase'
 
 export const orderedInsightSectionNames = [
   'content',
@@ -6,8 +6,8 @@ export const orderedInsightSectionNames = [
   'reviseQuestion',
   'quiz',
   'footnotes',
-  'gameContent',
-];
+  'gameContent'
+]
 
 export const insightSectionNameToTitleMap = new Map([
   ['content', 'Content'],
@@ -15,28 +15,28 @@ export const insightSectionNameToTitleMap = new Map([
   ['reviseQuestion', 'Revision'],
   ['quiz', 'Quiz'],
   ['footnotes', 'Footnotes'],
-  ['gameContent', 'Game Content'],
-]);
+  ['gameContent', 'Game Content']
+])
 
 export const insightSectionTitleToNameMap = orderedInsightSectionNames.reduce(
   (map, prop) => {
-    map.set(insightSectionNameToTitleMap.get(prop), prop);
-    return map;
+    map.set(insightSectionNameToTitleMap.get(prop), prop)
+    return map
   },
   new Map()
-);
+)
 
 export const TYPES = {
   HEADLINE: 'headline',
   SECTION: 'section',
-  ATTRIBUTE: 'attribute',
-};
+  ATTRIBUTE: 'attribute'
+}
 
 export const NAMES = {
   HEADLINE: 'headline',
   ...[...insightSectionNameToTitleMap.keys()].reduce((hash, key) => {
-    console.log(`key=${key}`);
-    hash[snakecase(key).toUpperCase()] = key;
-    return hash;
-  }, {}),
-};
+    console.log(`key=${key}`)
+    hash[snakecase(key).toUpperCase()] = key
+    return hash
+  }, {})
+}

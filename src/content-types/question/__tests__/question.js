@@ -1,4 +1,5 @@
-import { parse } from '../index';
-import { createTest, loadFixtures } from '../../test-utils';
+import * as parser from '../../../parser';
 
-createTest('question.parse', parse, loadFixtures('question'));
+export function parse(reviseQuestion) {
+  return parser.parse(reviseQuestion);
+}
