@@ -12,18 +12,29 @@
 
 ## API
 
-```js
-import {
-  insight, // parser for an insight markdown like this one: https://github.com/enkidevs/curriculum-tools/blob/v1/test/fixtures/insights/immediately-invoked-function-expression-iife.md
-} from '@enkidevs/curriculum-parser';
+TODO
 
-insight.full(entireInsightString); // returns an AST representing the entire insight
-insight.section.full(anyInsightSectionString); // returns an AST representing an insight section
-insight.section.content(anyInsightSectionContentString); // returns an AST representing the section "Content"
-insight.section.footnotes(anyInsightSectionFootnotesString); // returns an AST representing the section "Footnotes"
-insight.section.game(anyInsightSectionGameString); // returns an AST representing the section "Game"
-insight.section.practiceQuestion(anyInsightSectionPracticeQuestionString); // returns an AST representing the section "Practice Question"
-insight.section.reviseQuestion(anyInsightSectionReviseQuestionString); // returns an AST representing the section "Revision Question"
-insight.section.quiz(anyInsightSectionQuizString); // returns an AST representing the section "Quiz"
-insight.attribute(insightAttributeString); // returns an AST representing an insight attribute
+## Usage
+
+```js
+const {
+  types, getProcessor
+} = require('@enkidevs/curriculum-parser');
+
+const remark2rehype = require('remark-rehype');
+const doc = require('rehype-document');
+const format = require('rehype-format');
+const html = require('rehype-stringify');
+var vfile = require('to-vfile');
+var report = require('vfile-reporter');
+
+getProcessor(types.INSIGHT)
+  .use(remark2rehype)
+  .use(doc, { title: 'Insight' })
+  .use(format)
+  .use(html)
+  .process(vfile.readSync('insight.md'), function (err, file) {
+    console.error(report(err || file));
+    console.log(String(file));
+  });
 ```
