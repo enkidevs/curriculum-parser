@@ -4,13 +4,9 @@
   "description": "Enki curriculum parser",
   "main": "src/index.js",
   "scripts": {
-    "build:web": "browserify src/index.js > web/index.js",
-    "build": "npm run build:web",
-    "clean": "rimraf web",
     "format": "prettier-standard 'src/**/*.js'",
     "lint": "eslint . --ignore-path .gitignore",
-    "prebuild": "npm run clean",
-    "prepublishOnly": "npm run test && npm run clean && npm run build",
+    "prepublishOnly": "npm run test",
     "pretest": "npm run lint",
     "test:watch": "jest --watchAll",
     "test": "npm run lint && jest --notify"
@@ -26,10 +22,9 @@
     "test"
   ],
   "files": [
-    "src",
-    "web"
+    "src"
   ],
-  "author": "Nemanja Stojanovic <me@nem035.com>",
+  "author": "Nemanja Stojanovic <nemanjacoder@gmail.com>",
   "lint-staged": {
     "linters": {
       "src/**/*.js": [
@@ -48,7 +43,6 @@
   },
   "homepage": "https://github.com/enkidevs/curriculum-parser#readme",
   "devDependencies": {
-    "browserify": "^16.1.0",
     "jest": "^22.4.2",
     "jest-in-case": "^1.0.2",
     "lint-staged": "^7.0.0",
