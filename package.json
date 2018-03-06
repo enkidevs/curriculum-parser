@@ -23,9 +23,6 @@
     "parser",
     "ast"
   ],
-  "bin": {
-    "nk-parse": "./cli.js"
-  },
   "pre-commit": [
     "format",
     "test"
