@@ -1,7 +1,5 @@
-import visit from 'unist-util-visit'
-
-export default function questionGap () {
-  https: inlineTokenizer.locator = locator
+module.exports = function questionGap () {
+  inlineTokenizer.locator = locator
 
   const Parser = this.Parser
 
@@ -10,16 +8,6 @@ export default function questionGap () {
   const inlineMethods = Parser.prototype.inlineMethods
   inlineTokenizers.questionGap = inlineTokenizer
   inlineMethods.splice(0, 0, 'questionGap')
-
-  const Compiler = this.Compiler
-  if (Compiler) {
-    const visitors = Compiler.prototype.visitors
-    if (!visitors) return
-
-    visitors.questionGap = node => {
-      return '???'
-    }
-  }
 
   function locator (value, fromIndex) {
     return value.indexOf('???', fromIndex)

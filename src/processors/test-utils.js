@@ -1,6 +1,7 @@
-import jestInCase from 'jest-in-case'
-import fs from 'fs'
-import path from 'path'
+const jestInCase = require('jest-in-case')
+const fs = require('fs')
+const path = require('path')
+const { parseSync } = require('../index')
 
 const folderNames = folderPath =>
   fs
@@ -10,9 +11,14 @@ const folderNames = folderPath =>
 const fixturePath = folderPath =>
   path.join(__dirname, ...folderPath.split('/'), '__tests__', 'fixtures')
 
-export function loadFixtures (folderPath, { includeInvalid = false } = {}) {
+module.exports.loadFixtures = function loadFixtures (
+  folderPath,
+  { includeInvalid = false } = {}
+) {
   const names = folderNames(fixturePath(folderPath))
-  const fixtures = names.map(folderName => loadFixture(folderPath, folderName))
+  const fixtures = names.map(folderName =>
+    module.exports.loadFixture(folderPath, folderName)
+  )
   if (includeInvalid) {
     return fixtures
   }
@@ -28,7 +34,7 @@ function loadFile (folderPath = '', name = '') {
   }
 }
 
-export function loadFixture (folderPath, folderName) {
+module.exports.loadFixture = function loadFixture (folderPath, folderName) {
   const fp = path.join(fixturePath(folderPath), folderName)
   const output = {}
   const textFile = loadFile(fp, 'text.md')
@@ -42,13 +48,18 @@ export function loadFixture (folderPath, folderName) {
   return output
 }
 
-export function createTest (name, parse, fixtures) {
+module.exports.createTestParseSync = function createTestParseSync (
+  name,
+  processor,
+  fixtures
+) {
   jestInCase(
-    name,
+    `${name}.parseSync`,
     fixture => {
-      expect(JSON.parse(JSON.stringify(parse(fixture.text)))).toEqual(
-        fixture.ast
-      )
+      console.log(JSON.stringify(parseSync(processor, fixture.text), null, 2))
+      expect(
+        JSON.parse(JSON.stringify(parseSync(processor, fixture.text)))
+      ).toEqual(fixture.ast)
     },
     fixtures
   )

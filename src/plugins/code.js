@@ -1,6 +1,7 @@
-import visit from 'unist-util-visit'
+const visit = require('unist-util-visit')
+const { base } = require('../processors')
 
-export default function code ({ processor }) {
+module.exports = function code () {
   return transform
 
   function transform (ast) {
