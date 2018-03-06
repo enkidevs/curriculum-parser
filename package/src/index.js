@@ -6,7 +6,6 @@ const types = {
   INSIGHT: 'insight',
   QUESTION: 'question'
 }
-
 function getPlugins (type) {
   switch (type) {
     case types.BASE:
