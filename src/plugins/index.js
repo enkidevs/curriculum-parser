@@ -1,5 +1,9 @@
+const base = require('./base')
+const insight = require('./insight')
+const question = require('./question')
+
 module.exports = {
-  code: require('./code'),
-  questionGap: require('./question-gap'),
-  code: require('./yaml')
+  base,
+  insight,
+  question
 }

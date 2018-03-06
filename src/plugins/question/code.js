@@ -1,5 +1,5 @@
 const visit = require('unist-util-visit')
-const { base } = require('../processors')
+const { parseSync } = require('../../index')
 
 module.exports = function code () {
   return transform
@@ -9,7 +9,7 @@ module.exports = function code () {
   }
 
   function parseCode (node) {
-    const ast = processor.runSync(processor.parse(node.value))
+    const ast = parseSync('base', node.value)
     node.children = ast.children
   }
 }

@@ -1,0 +1,16 @@
+
+> @enkidevs/curriculum-parser@0.1.0 pretest /Users/nemzilla/Dev/enki/curriculum-parser
+> npm run lint
+
+
+> @enkidevs/curriculum-parser@0.1.0 lint /Users/nemzilla/Dev/enki/curriculum-parser
+> eslint . --ignore-path .gitignore
+
+
+> @enkidevs/curriculum-parser@0.1.0 test /Users/nemzilla/Dev/enki/curriculum-parser
+> npm run lint && jest --notify
+
+
+> @enkidevs/curriculum-parser@0.1.0 lint /Users/nemzilla/Dev/enki/curriculum-parser
+> eslint . --ignore-path .gitignore
+

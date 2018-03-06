@@ -48,19 +48,14 @@ module.exports.loadFixture = function loadFixture (folderPath, folderName) {
   return output
 }
 
-module.exports.createTestParseSync = function createTestParseSync (
-  name,
-  processor,
-  fixtures
-) {
+module.exports.createTestParseSync = function createTestParseSync (type) {
   jestInCase(
-    `${name}.parseSync`,
+    `${type}.parseSync`,
     fixture => {
-      console.log(JSON.stringify(parseSync(processor, fixture.text), null, 2))
-      expect(
-        JSON.parse(JSON.stringify(parseSync(processor, fixture.text)))
-      ).toEqual(fixture.ast)
+      expect(JSON.parse(JSON.stringify(parseSync(type, fixture.text)))).toEqual(
+        fixture.ast
+      )
     },
-    fixtures
+    module.exports.loadFixtures(type)
   )
 }

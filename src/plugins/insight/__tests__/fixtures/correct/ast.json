@@ -4211,7 +4211,7 @@
       "type": "paragraph",
       "children": [
         {
-          "type": "questionGap",
+          "type": "text",
           "value": "???",
           "position": {
             "start": {
