@@ -238,6 +238,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-json.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/CodeFlask.js/0.1.1/codeflask.js"></script>
   <script src="https://wzrd.in/standalone/lodash.debounce"></script>
   <script src="https://wzrd.in/standalone/@enkidevs%2Fcurriculum-parser@0.2.1"></script>
@@ -447,7 +448,10 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
           if (!document.querySelector('#ast-box input[type="checkbox"]').checked) {
             trimAst(ast)
           }
-          astCode.innerHTML = JSON.stringify(ast, null, 2)
+          astCode.innerHTML = window.Prism.highlight(
+            JSON.stringify(ast, null, 2),
+            window.Prism.languages.json
+          )
           getHtmlFromAst(ast, html => {
             htmlPreview.innerHTML = html
           })
