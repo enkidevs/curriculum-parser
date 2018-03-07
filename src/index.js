@@ -29,10 +29,21 @@ function parseSync (type, md) {
   return processor.runSync(processor.parse(md))
 }
 
+function parse (type, md) {
+  const processor = getProcessor(type)
+  return new Promise((resolve, reject) => {
+    processor.run(processor.parse(md), (err, ast) => {
+      if (err) return reject(err)
+      resolve(ast)
+    })
+  })
+}
+
 module.exports = {
   plugins,
   getPlugins,
   types,
   getProcessor,
-  parseSync
+  parseSync,
+  parse
 }

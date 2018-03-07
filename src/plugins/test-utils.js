@@ -1,7 +1,7 @@
 const jestInCase = require('jest-in-case')
 const fs = require('fs')
 const path = require('path')
-const { parseSync } = require('../index')
+const { parse, parseSync } = require('../index')
 
 const folderNames = folderPath =>
   fs
@@ -55,6 +55,17 @@ module.exports.createTestParseSync = function createTestParseSync (type) {
       expect(JSON.parse(JSON.stringify(parseSync(type, fixture.text)))).toEqual(
         fixture.ast
       )
+    },
+    module.exports.loadFixtures(type)
+  )
+}
+
+module.exports.createTestParse = function createTestParse (type) {
+  jestInCase(
+    `${type}.parse`,
+    async fixture => {
+      const result = await parse(type, fixture.text)
+      expect(JSON.parse(JSON.stringify(result))).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)
   )
