@@ -222,7 +222,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
   <script src="https://wzrd.in/standalone/lodash.debounce"></script>
-  <script src="https://wzrd.in/standalone/@enkidevs%2Fcurriculum-parser@latest"></script>
+  <script src="https://wzrd.in/standalone/@enkidevs%2Fcurriculum-parser@0.2.1"></script>
   <script src="https://wzrd.in/standalone/unified"></script>
   <script src="https://wzrd.in/standalone/remark-rehype"></script>
   <script src="https://wzrd.in/standalone/rehype-stringify"></script>
@@ -417,7 +417,7 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
     markdownFlask.run('#markdown-box', { language: 'markdown', lineNumbers: true })
     markdownFlask.onUpdate(window.lodash.debounce(md => {
       getAstFromString(md)
-        .then(() => {
+        .then(ast => {
           astCode.innerHTML = JSON.stringify(ast, null, 2)
           getHtmlFromAst(ast, html => {
             htmlPreview.innerHTML = html
@@ -433,7 +433,7 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
       )
     }
 
-    function getHtmlFromAst(ast) {
+    function getHtmlFromAst(ast, cb) {
       let value
       try {
         const processor = window.unified()
@@ -441,7 +441,10 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
           .use(window.rehypeHighlight)
           .use(window.rehypeStringify)
 
-        value = processor.stringify(processor.runSync(ast))
+        processor.run(ast, (err, ast) => {
+          if (err) return cb(err.toString())
+          cb(processor.stringify(ast))
+        })
       } catch (e) {
         value = e.toString()
       }
