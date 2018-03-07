@@ -1,5 +1,7 @@
+const unified = require('unified')
 const visit = require('unist-util-visit')
-const { parseSync } = require('../../index')
+const base = require('../base')
+const questionGap = require('./question-gap')
 
 module.exports = function code () {
   return transform
@@ -9,7 +11,13 @@ module.exports = function code () {
   }
 
   function parseCode (node) {
-    const ast = parseSync('base', node.value)
-    node.children = ast.children
+    if (node.value.includes('???')) {
+      node.type = 'question-code'
+      const processor = unified()
+        .use(base)
+        .use(questionGap)
+      const ast = processor.runSync(processor.parse(node.value))
+      node.children = ast.children
+    }
   }
 }

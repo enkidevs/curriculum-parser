@@ -3582,7 +3582,7 @@
       }
     },
     {
-      "type": "code",
+      "type": "question-code",
       "lang": "sql",
       "value": "SELECT pokemon.name,\n  poke_move_level.level,\n  poke_move_level.name,\n  poke_move_level.version_group_id\n??? pokemon\n??? (SELECT *\nFROM pokemon_move\nLEFT JOIN move ???\npokemon_move.move_id = move.id)\n??? poke_move_level\nON pokemon.id =\n  poke_move_level.pokemon_id\nORDER BY pokemon.id,\n  LJoinRes.version_group_id,\n  LJoinRes.level;",
       "position": {
@@ -3614,7 +3614,617 @@
           1,
           1
         ]
-      }
+      },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "SELECT pokemon.name,",
+              "position": {
+                "start": {
+                  "line": 1,
+                  "column": 1,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 1,
+                  "column": 21,
+                  "offset": 20
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 1,
+                  "column": 21,
+                  "offset": 20
+                },
+                "end": {
+                  "line": 2,
+                  "column": 1,
+                  "offset": 21
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  poke_move_level.level,",
+              "position": {
+                "start": {
+                  "line": 2,
+                  "column": 1,
+                  "offset": 21
+                },
+                "end": {
+                  "line": 2,
+                  "column": 25,
+                  "offset": 45
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 2,
+                  "column": 25,
+                  "offset": 45
+                },
+                "end": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 46
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  poke_move_level.name,",
+              "position": {
+                "start": {
+                  "line": 3,
+                  "column": 1,
+                  "offset": 46
+                },
+                "end": {
+                  "line": 3,
+                  "column": 24,
+                  "offset": 69
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 3,
+                  "column": 24,
+                  "offset": 69
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 70
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  poke_move_level.version_group_id",
+              "position": {
+                "start": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 70
+                },
+                "end": {
+                  "line": 4,
+                  "column": 35,
+                  "offset": 104
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 4,
+                  "column": 35,
+                  "offset": 104
+                },
+                "end": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 105
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "questionGap",
+              "value": "???",
+              "position": {
+                "start": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 105
+                },
+                "end": {
+                  "line": 5,
+                  "column": 4,
+                  "offset": 108
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "text",
+              "value": " pokemon",
+              "position": {
+                "start": {
+                  "line": 5,
+                  "column": 4,
+                  "offset": 108
+                },
+                "end": {
+                  "line": 5,
+                  "column": 12,
+                  "offset": 116
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 5,
+                  "column": 12,
+                  "offset": 116
+                },
+                "end": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 117
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "questionGap",
+              "value": "???",
+              "position": {
+                "start": {
+                  "line": 6,
+                  "column": 1,
+                  "offset": 117
+                },
+                "end": {
+                  "line": 6,
+                  "column": 4,
+                  "offset": 120
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "text",
+              "value": " (SELECT *",
+              "position": {
+                "start": {
+                  "line": 6,
+                  "column": 4,
+                  "offset": 120
+                },
+                "end": {
+                  "line": 6,
+                  "column": 14,
+                  "offset": 130
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 6,
+                  "column": 14,
+                  "offset": 130
+                },
+                "end": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 131
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "FROM pokemon_move",
+              "position": {
+                "start": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 131
+                },
+                "end": {
+                  "line": 7,
+                  "column": 18,
+                  "offset": 148
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 7,
+                  "column": 18,
+                  "offset": 148
+                },
+                "end": {
+                  "line": 8,
+                  "column": 1,
+                  "offset": 149
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "LEFT JOIN move ",
+              "position": {
+                "start": {
+                  "line": 8,
+                  "column": 1,
+                  "offset": 149
+                },
+                "end": {
+                  "line": 8,
+                  "column": 16,
+                  "offset": 164
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "questionGap",
+              "value": "???",
+              "position": {
+                "start": {
+                  "line": 8,
+                  "column": 16,
+                  "offset": 164
+                },
+                "end": {
+                  "line": 8,
+                  "column": 19,
+                  "offset": 167
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 8,
+                  "column": 19,
+                  "offset": 167
+                },
+                "end": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 168
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "pokemon_move.move_id = move.id)",
+              "position": {
+                "start": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 168
+                },
+                "end": {
+                  "line": 9,
+                  "column": 32,
+                  "offset": 199
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 9,
+                  "column": 32,
+                  "offset": 199
+                },
+                "end": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 200
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "questionGap",
+              "value": "???",
+              "position": {
+                "start": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 200
+                },
+                "end": {
+                  "line": 10,
+                  "column": 4,
+                  "offset": 203
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "text",
+              "value": " poke_move_level",
+              "position": {
+                "start": {
+                  "line": 10,
+                  "column": 4,
+                  "offset": 203
+                },
+                "end": {
+                  "line": 10,
+                  "column": 20,
+                  "offset": 219
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 10,
+                  "column": 20,
+                  "offset": 219
+                },
+                "end": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 220
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "ON pokemon.id =",
+              "position": {
+                "start": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 220
+                },
+                "end": {
+                  "line": 11,
+                  "column": 16,
+                  "offset": 235
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 11,
+                  "column": 16,
+                  "offset": 235
+                },
+                "end": {
+                  "line": 12,
+                  "column": 1,
+                  "offset": 236
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  poke_move_level.pokemon_id",
+              "position": {
+                "start": {
+                  "line": 12,
+                  "column": 1,
+                  "offset": 236
+                },
+                "end": {
+                  "line": 12,
+                  "column": 29,
+                  "offset": 264
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 12,
+                  "column": 29,
+                  "offset": 264
+                },
+                "end": {
+                  "line": 13,
+                  "column": 1,
+                  "offset": 265
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "ORDER BY pokemon.id,",
+              "position": {
+                "start": {
+                  "line": 13,
+                  "column": 1,
+                  "offset": 265
+                },
+                "end": {
+                  "line": 13,
+                  "column": 21,
+                  "offset": 285
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 13,
+                  "column": 21,
+                  "offset": 285
+                },
+                "end": {
+                  "line": 14,
+                  "column": 1,
+                  "offset": 286
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  LJoinRes.version_group_id,",
+              "position": {
+                "start": {
+                  "line": 14,
+                  "column": 1,
+                  "offset": 286
+                },
+                "end": {
+                  "line": 14,
+                  "column": 29,
+                  "offset": 314
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "break",
+              "position": {
+                "start": {
+                  "line": 14,
+                  "column": 29,
+                  "offset": 314
+                },
+                "end": {
+                  "line": 15,
+                  "column": 1,
+                  "offset": 315
+                },
+                "indent": [
+                  1
+                ]
+              }
+            },
+            {
+              "type": "text",
+              "value": "  LJoinRes.level;",
+              "position": {
+                "start": {
+                  "line": 15,
+                  "column": 1,
+                  "offset": 315
+                },
+                "end": {
+                  "line": 15,
+                  "column": 18,
+                  "offset": 332
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 1,
+              "column": 1,
+              "offset": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 18,
+              "offset": 332
+            },
+            "indent": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ]
     },
     {
       "type": "list",
@@ -4211,7 +4821,7 @@
       "type": "paragraph",
       "children": [
         {
-          "type": "text",
+          "type": "questionGap",
           "value": "???",
           "position": {
             "start": {
