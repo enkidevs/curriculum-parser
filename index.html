@@ -221,6 +221,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/CodeFlask.js/0.1.1/codeflask.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
+  <script src="https://wzrd.in/standalone/lodash.debounce"></script>
   <script src="https://wzrd.in/standalone/@enkidevs%2Fcurriculum-parser@latest"></script>
   <script src="https://wzrd.in/standalone/unified"></script>
   <script src="https://wzrd.in/standalone/remark-rehype"></script>
@@ -251,7 +252,6 @@ links:
 
 # Multiple JOINs
 
----
 ## Content
 
 Sometimes, a single join might not be enough to get the desired result. In \`many-to-many\` relationships, when an intermediate table is used to avoid data duplication, such practice is common.
@@ -311,7 +311,6 @@ These are the first four rows of output (out of 1225):
 
 The same result can be achieved by using subqueries.
 
----
 ## Practice
 
 Obtain the list of moves a Pokémon learns ordered by game version and level at which it learns the move:
@@ -343,7 +342,6 @@ ORDER BY pokemon.id,
 * \`SELECT\`
 * \`ORDER BY\`
 
----
 ## Revision
 
 Is the following statement true or false?
@@ -355,7 +353,6 @@ In order to join multiple tables together, subqueries must be used.
 * false
 * true
 
----
 ## Quiz
 
 Sometimes one is not enough?
@@ -418,24 +415,22 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
     const curriculumParser = window.enkidevs2FcurriculumParser
 
     markdownFlask.run('#markdown-box', { language: 'markdown', lineNumbers: true })
-    markdownFlask.onUpdate(code => {
-      const ast = getAstFromString(code)
-      astCode.innerHTML = JSON.stringify(ast, null, 2)
-      htmlPreview.innerHTML = getHtmlFromAst(ast)
-    })
+    markdownFlask.onUpdate(window.debounce(md => {
+      getAstFromString(md)
+        .then(() => {
+          astCode.innerHTML = JSON.stringify(ast, null, 2)
+          getHtmlFromAst(ast, html => {
+            htmlPreview.innerHTML = html
+          })
+        })
+    }))
     markdownFlask.update(sample)
 
-    function getAstFromString(code) {
-      let value
-      try {
-        value = curriculumParser.parseSync(
-          curriculumParser.types.INSIGHT,
-          code
-        )
-      } catch (e) {
-        value = e.toString()
-      }
-      return value
+    function getAstFromString(md) {
+      return curriculumParser.parse(
+        curriculumParser.types.INSIGHT,
+        md
+      )
     }
 
     function getHtmlFromAst(ast) {
