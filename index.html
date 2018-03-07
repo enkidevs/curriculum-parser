@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism-okaidia.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css" rel="stylesheet">
   <style>
     /* Copyright: https://github.com/kazzkiq/CodeFlask.js*/
     .CodeFlask {
@@ -16,8 +17,8 @@
     }
     .CodeFlask__pre,
     .CodeFlask__textarea,
-    code[class*=language-],
-    pre[class*=language-] {
+    .CodeFlask code[class*=language-],
+    .CodeFlask pre[class*=language-] {
       box-sizing: border-box;
       position: absolute;
       top: 0;
@@ -71,6 +72,31 @@
     .CodeFlask__pre_line-numbers {
       padding-left: 3.8em!important
     }
+    #markdown-box {
+      width: 100%;
+    }
+    #markdown-box > pre {
+      height: 750%;
+    }
+    #markdown-box > textarea {
+      caret-color: #fff;
+    }
+  </style>
+  <style>
+    #ast-box pre {
+      background: transparent;
+      font-size: 13px;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    #html-box {
+      color: #fff;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      overflow: auto;
+      padding: 1rem;
+    }
   </style>
   <style>
     body {
@@ -80,10 +106,16 @@
     main {
       display: flex;
       justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    @media (min-width: 700px) {
+      main {
+        flex-direction: row;
+      }
     }
     aside.box-container {
       color: #fff;
-      flex: 1;
       flex-direction: column;
     }
     a,
@@ -98,7 +130,6 @@
     .box-container {
       align-items: center;
       display: flex;
-      flex: 4;
       justify-content: center;
     }
     .box {
@@ -108,25 +139,17 @@
       flex-direction: column;
       flex: 1;
       justify-content: center;
-      overflow: auto;
     }
-    .box:first-child {
+    .box:not(:last-child) {
       border-right: 1px solid #263238;
     }
-    .box> :not(.box-title),
-    .code-box {
-      border-top: 1px solid #263238;
-      width: 100%;
+    .box > .box-content {
       height: calc(100vh - 60px);
-    }
-    .code-box>pre {
-      height: 500000%;
-    }
-    .code-box>textarea {
-      caret-color: #fff;
+      overflow: auto;
     }
     .box-title {
       align-items: center;
+      border-bottom: 1px solid #263238;
       color: #fff;
       display: flex;
       font-family: 'Roboto Mono', monospace;
@@ -135,13 +158,33 @@
       height: 60px;
       justify-content: center;
       text-align: center;
+      width: 100%;
+    }
+    .box-container-logo {
+      width: 300px;
+    }
+    .box-container-content {
+      flex-direction: column;
+    }
+    .box-container-content > .box,
+    .box-container-content > .box > .box-content {
+      width: 100vw;
+    }
+    @media (min-width: 700px) {
+      .box-container-content {
+        flex-direction: row;
+      }
+      .box-container-content > .box,
+      .box-container-content > .box > .box-content {
+        width: calc((100vw - 300px) / 3);
+      }
     }
   </style>
 </head>
 
 <body>
   <main>
-    <aside class="box-container">
+    <aside class="box-container box-container-logo">
       <div id="logo">
         <svg viewBox="105 0 420 115" xmlns="http://www.w3.org/2000/svg">
           <path d="M142.25 47l-37.5 24v6l37.5 24V90.5L116 74l26.25-16.5V47zm330-30h9l-31.5 97.5h-9l31.5-97.5zm15 30l37.5 24v6l-37.5 24V90.5L513.5 74l-26.25-16.5V47z"
@@ -154,18 +197,20 @@
         <a href="https://github.com/enkidevs/curriculum">Curriculum</a> Parser
       </h1>
     </aside>
-    <section class="box-container">
+    <section class="box-container box-container-content">
       <section class="box">
         <section class="box-title">Insight Markdown</section>
-        <section id="markdown-box" class="code-box"></section>
+        <section class="box-content" id="markdown-box"></section>
       </section>
       <section class="box">
         <section class="box-title">Insight AST</section>
-        <section id="ast-box" class="code-box"></section>
+        <section class="box-content" id="ast-box">
+          <pre><code class="language-json"></code></pre>
+        </section>
       </section>
       <section class="box">
         <section class="box-title">HTML Preview</section>
-        <section id="html-box" class="code-box"></section>
+        <section class="box-content"><div id="html-box"></div></section>
       </section>
     </section>
   </main>
@@ -174,110 +219,240 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-markdown.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-json.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/CodeFlask.js/0.1.1/codeflask.js"></script>
-  <script src="https://wzrd.in/standalone/enki-content@latest"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="https://wzrd.in/standalone/@enkidevs%2Fcurriculum-parser@latest"></script>
+  <script src="https://wzrd.in/standalone/unified"></script>
+  <script src="https://wzrd.in/standalone/remark-rehype"></script>
+  <script src="https://wzrd.in/standalone/rehype-stringify"></script>
+  <script src="https://wzrd.in/standalone/rehype-highlight"></script>
   <script>
-    const options = { lineNumbers: true }
-    const markdownFlask = new CodeFlask();
-    const jsonFlask = new CodeFlask();
-    function getValue(code) {
-      let value;
-      try {
-        value = JSON.stringify(window.enkiContent.parse(code), null, 2);
-      } catch (e) {
-        value = e.toString();
-      }
-      return value;
-    }
-    const sample = `# Getter and setter methods
-author: adamMontgomerie
+    const sample = `---
+author: mihaiberq
+
 levels:
+  - beginner
   - basic
-  - advanced
   - medium
+
 type: normal
-category: feature
+
+inAlgoPool: false
+
+category: must-know
+
 tags:
-  - object
-  - classes
-  - getter
-  - setter
+  - workout
+  - deep
+
 links:
-  - >-
-    [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects){website}
+  - '[wikipedia.com](https://en.wikipedia.org/wiki/Join_(SQL)){website}'
+---
+
+# Multiple JOINs
+
 ---
 ## Content
-Getter and setter methods return or set the value of a property of an object respectively.
-To define a getter or setter method, the method should be prefixed with either \`get\` or \`set\`. For example:
+
+Sometimes, a single join might not be enough to get the desired result. In \`many-to-many\` relationships, when an intermediate table is used to avoid data duplication, such practice is common.
+
+In the Pokémon database you can find multiple intermediate tables, usually named \`table1_table2\`: for the \`pokemon\` and \`type\` tables, the intermediate one is named \`pokemon_type\`. Same goes for \`pokemon\`, \`move\` and \`pokemon_move\`.
+
+These are some table entries which contain only the columns relevant to the query. The \`pokemon\` table:
+
+| id  |   name    |
+| :-: | :-------: |
+|  1  | bulbasaur |
+|  2  |  ivysaur  |
+|  3  | venusaur  |
+
+The \`pokemon_type\` table:
+
+| id  | slot | pokemon_id | type_id |
+| :-: | :--: | :--------: | :-----: |
+|  1  |  1   |     1      |   12    |
+|  2  |  2   |     1      |    4    |
+|  3  |  1   |     2      |   12    |
+|  4  |  2   |     2      |    4    |
+|  5  |  1   |     3      |   12    |
+|  6  |  2   |     3      |    4    |
+
+And the \`type\` table:
+
+| id  |  name  |
+| :-: | :----: |
+|  1  | normal |
+| ... |
+|  4  | poison |
+| ... |
+| 12  | grass  |
+
+The syntax is this:
+
+\`\`\`sql
+SELECT pokemon.name, type.name
+FROM pokemon_type
+LEFT JOIN pokemon
+ON pokemon_type.pokemon_id = pokemon.id
+LEFT JOIN type
+ON pokemon_type.type_id = type.id;
 \`\`\`
-var o = {
-  _val: 0,
-  get val() {
-    console.log('getting ' + this._val);
-    return this._val;
-  },
-  set val(x) {
-    console.log('setting ' + x);
-    this._val = x;
-  }
-};
+
+This is effectively join the first two tables (_pokemon_type_ and _pokemon_) and then join the resulting table with the _type_ table.
+
+These are the first four rows of output (out of 1225):
+
+|   name    |  name  |
+| :-------: | :----: |
+| bulbasaur | grass  |
+| bulbasaur | poison |
+|  ivysaur  | grass  |
+|  ivysaur  | poison |
+
+The same result can be achieved by using subqueries.
+
+---
+## Practice
+
+Obtain the list of moves a Pokémon learns ordered by game version and level at which it learns the move:
+
+\`\`\`sql
+SELECT pokemon.name,
+  poke_move_level.level,
+  poke_move_level.name,
+  poke_move_level.version_group_id
+??? pokemon
+??? (SELECT *
+FROM pokemon_move
+LEFT JOIN move ???
+pokemon_move.move_id = move.id)
+??? poke_move_level
+ON pokemon.id =
+  poke_move_level.pokemon_id
+ORDER BY pokemon.id,
+  LJoinRes.version_group_id,
+  LJoinRes.level;
 \`\`\`
-In this example, \`val()\` is a getter method and \`val(x)\` is a setter method, both with the side effect of logging to console.
-These getters and setters can be used silently, as if \`o\` was a standard object with a \`val\` field:
-\`\`\`
-o.val     //> getting 0
-o.val = 3 //> setting 3
-o.val     //> getting 3
-\`\`\`
+
+* \`FROM\`
+* \`RIGHT OUTER JOIN\`
+* \`ON\`
+* \`AS\`
+* \`pokemon\`
+* \`OUTER JOIN\`
+* \`SELECT\`
+* \`ORDER BY\`
+
 ---
 ## Revision
-Complete the getter/setter pattern in the code below:
-\`\`\`javascript
-var enki = {
-  _val = 0,
-  ??? val() {
-    return this._val;
-  },
-  ??? val(x) {
-    this._val = x;
-  }
-};
-\`\`\`
-*\`get\`
-*\`set\`
-*\`.\`
-*\`getter\`
-*\`setter\``
-    setTimeout(() => {
-      document
-        .querySelector('#markdown-box textarea')
-        .addEventListener('focus', () => {
-          focusHash.markdown = true;
-          focusHash.ast = false;
-        });
-      document
-        .querySelector('#ast-box textarea')
-        .addEventListener('focus', () => {
-          focusHash.markdown = false;
-          focusHash.ast = true;
-        });
-    })
-    markdownFlask.run('#markdown-box', { language: 'markdown', ...options })
-    jsonFlask.run('#ast-box', { language: 'json', ...options })
-    const focusHash = {
-      markdown: true,
-      ast: false
-    };
+
+Is the following statement true or false?
+
+In order to join multiple tables together, subqueries must be used.
+
+???
+
+* false
+* true
+
+---
+## Quiz
+
+Sometimes one is not enough?
+
+Given the tables called \`pokedex\`, \`version_group\` and \`pokedex_version_group\`:
+
+| id  | is_main_series | region_id |      name      |
+| :-: | :------------: | :-------: | :------------: |
+|  1  |       t        |           |    national    |
+|  2  |       t        |     1     |     kanto      |
+|  3  |       t        |     2     | original-johto |
+|  4  |       t        |     3     |     hoenn      |
+
+| id  | order | generation_id |    name     |
+| :-: | :---: | :-----------: | :---------: |
+|  1  |   1   |       1       |  red-blue   |
+|  2  |   2   |       1       |   yellow    |
+|  3  |   3   |       2       | gold-silver |
+
+| id  | pokedex_id | version_group_id |
+| :-: | :--------: | :--------------: |
+|  1  |     2      |        1         |
+|  2  |     2      |        2         |
+|  3  |     2      |        7         |
+
+Get the names of pokedexes and version_groups using \`pokedex_version_group\` table. Do not include records that don't have both, \`pokedex\` and \`version_group\`:
+
+*    \`\`\`sql
+    SELECT pokedex.name, version_group.name
+    FROM pokedex_version_group
+    INNER JOIN pokedex ON pokedex_version_group.pokedex_id = pokedex.id
+    INNER JOIN version_group ON pokedex_version_group.version_group_id = version_group.id
+    \`\`\`
+
+*    \`\`\`sql
+    SELECT pokedex.name, version_group.name
+    FROM pokedex_version_group
+    RIGHT JOIN pokedex ON pokedex_version_group.pokedex_id = pokedex.id
+    LEFT JOIN version_group ON pokedex_version_group.version_group_id = version_group.id;
+    \`\`\`
+
+*    \`\`\`sql
+    SELECT pokedex.name, version_group.name
+    FROM pokedex_version_group
+    FULL OUTER JOIN pokedex ON pokedex_version_group.pokedex_id = pokedex.id
+    FULL OUTER JOIN version_group ON pokedex_version_group.version_group_id = version_group.id;
+    \`\`\`
+
+*    \`\`\`sql
+    SELECT pokedex.name, version_group.name
+    FROM pokedex_version_group
+    LEFT JOIN pokedex ON pokedex_version_group.pokedex_id = pokedex.id
+    RIGHT JOIN version_group ON pokedex_version_group.version_group_id = version_group.id;
+    \`\`\`
+`
+
+    const markdownFlask = new CodeFlask()
+    const astCode = document.querySelector('#ast-box code')
+    const htmlPreview = document.querySelector('#html-box')
+    const curriculumParser = window.enkidevs2FcurriculumParser
+
+    markdownFlask.run('#markdown-box', { language: 'markdown', lineNumbers: true })
     markdownFlask.onUpdate(code => {
-      if (focusHash.markdown) {
-        jsonFlask.update(getValue(code))
-      }
+      const ast = getAstFromString(code)
+      astCode.innerHTML = JSON.stringify(ast, null, 2)
+      htmlPreview.innerHTML = getHtmlFromAst(ast)
     })
-    jsonFlask.onUpdate(code => {
-      if (focusHash.ast) {
-        markdownFlask.update(getValue(code))
+    markdownFlask.update(sample)
+
+    function getAstFromString(code) {
+      let value
+      try {
+        value = curriculumParser.parseSync(
+          curriculumParser.types.INSIGHT,
+          code
+        )
+      } catch (e) {
+        value = e.toString()
       }
-    })
-    markdownFlask.update(sample);
+      return value
+    }
+
+    function getHtmlFromAst(ast) {
+      let value
+      try {
+        const processor = window.unified()
+          .use(window.remarkRehype)
+          .use(window.rehypeHighlight)
+          .use(window.rehypeStringify)
+
+        value = processor.stringify(processor.runSync(ast))
+      } catch (e) {
+        value = e.toString()
+      }
+      return value
+    }
+
   </script>
 </body>
 
