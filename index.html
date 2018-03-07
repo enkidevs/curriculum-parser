@@ -91,8 +91,6 @@
     }
 
     #html-box {
-      color: #fff;
-      font-family: 'Roboto Mono', monospace;
       font-size: 13px;
       overflow: auto;
       padding: 1rem;
@@ -102,6 +100,8 @@
     body {
       margin: 0;
       background-color: #282A36;
+      color: #fff;
+      font-family: 'Roboto Mono', monospace;
     }
     main {
       display: flex;
@@ -115,7 +115,6 @@
       }
     }
     aside.box-container {
-      color: #fff;
       flex-direction: column;
     }
     a,
@@ -146,19 +145,22 @@
     .box > .box-content {
       height: calc(100vh - 60px);
       overflow: auto;
+      position: relative;
     }
     .box-title {
       align-items: center;
       border-bottom: 1px solid #263238;
-      color: #fff;
       display: flex;
-      font-family: 'Roboto Mono', monospace;
       font-size: 1.5rem;
       font-weight: bold;
       height: 60px;
       justify-content: center;
       text-align: center;
       width: 100%;
+    }
+    .box-control {
+      font-size: 13px;
+      position: fixed;
     }
     .box-container-logo {
       width: 300px;
@@ -194,7 +196,7 @@
         </svg>
       </div>
       <h1>
-        <a href="https://github.com/enkidevs/curriculum">Curriculum</a> Parser
+        <a href="https://github.com/enkidevs/curriculum-parser">Curriculum Parser</a>
       </h1>
     </aside>
     <section class="box-container box-container-content">
@@ -205,6 +207,9 @@
       <section class="box">
         <section class="box-title">Insight AST</section>
         <section class="box-content" id="ast-box">
+          <div class="box-control">
+            <input type="checkbox"> Full Tree
+          </div>
           <pre><code class="language-json"></code></pre>
         </section>
       </section>
@@ -415,16 +420,26 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
     const curriculumParser = window.enkidevs2FcurriculumParser
 
     markdownFlask.run('#markdown-box', { language: 'markdown', lineNumbers: true })
-    markdownFlask.onUpdate(window.lodash.debounce(md => {
+    markdownFlask.onUpdate(window.lodash.debounce(render))
+    markdownFlask.update(sample)
+
+    document
+      .querySelector('#ast-box input[type="checkbox"]')
+      .addEventListener('change', () => {
+        render(markdownFlask.textarea.value)
+      })
+    function render(md) {
       getAstFromString(md)
         .then(ast => {
+          if (!document.querySelector('#ast-box input[type="checkbox"]').checked) {
+            trimAst(ast)
+          }
           astCode.innerHTML = JSON.stringify(ast, null, 2)
           getHtmlFromAst(ast, html => {
             htmlPreview.innerHTML = html
           })
         })
-    }))
-    markdownFlask.update(sample)
+    }
 
     function getAstFromString(md) {
       return curriculumParser.parse(
@@ -449,6 +464,13 @@ Get the names of pokedexes and version_groups using \`pokedex_version_group\` ta
         value = e.toString()
       }
       return value
+    }
+
+    function trimAst(node) {
+      delete node.position
+      if (Array.isArray(node.children)) {
+        node.children.forEach(trimAst)
+      }
     }
 
   </script>
