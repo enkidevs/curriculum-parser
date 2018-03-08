@@ -26,7 +26,9 @@ module.exports = function section () {
         }
         const processor = unified()
           .use(remarkParse)
-          .use(remarkStringify)
+          .use(remarkStringify, {
+            bullet: '*'
+          })
           .use(customThematicBreak)
           .use(question)
 
