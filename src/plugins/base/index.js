@@ -1,4 +1,4 @@
 const remarkParse = require('remark-parse')
-const remarkBreaks = require('remark-breaks')
+const remarkStringify = require('remark-stringify')
 
-module.exports = [remarkParse, remarkBreaks]
+module.exports = [remarkParse, remarkStringify]
