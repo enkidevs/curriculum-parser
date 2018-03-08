@@ -1,16 +1,48 @@
-const visit = require('unist-util-visit')
+const map = require('unist-util-map')
+const jsYaml = require('js-yaml')
+
 module.exports = function yaml () {
+  const { Compiler } = this
+
+  if (Compiler) {
+    const { visitors } = Compiler.prototype
+    if (visitors) {
+      visitors.yaml = function (node) {
+        if (node.data && node.data.parsedValue) {
+          const { links } = node.data.parsedValue
+          if (Array.isArray(links)) {
+            node.data.parsedValue.links = links.map(
+              link => `[${link.name}](${link.url}){${link.nature}}`
+            )
+          }
+          const yml = jsYaml.safeDump(node.data.parsedValue)
+          return `---\n${yml}---`
+        }
+      }
+    }
+  }
+
   return transform
 
   function transform (ast) {
-    visit(ast, 'yaml', parseYaml)
-  }
-
-  function parseYaml (node) {
-    const { links } = node.data.parsedValue
-    if (Array.isArray(links)) {
-      node.data.parsedValue.links = links.map(getMarkdownLink)
-    }
+    return map(ast, function (node) {
+      if (node.type == 'yaml') {
+        const parsedValue = jsYaml.safeLoad(node.value, 'utf8')
+        const newNode = {
+          ...node,
+          data: {
+            parsedValue
+          }
+        }
+        const { links } = parsedValue
+        if (Array.isArray(links)) {
+          newNode.data.parsedValue.links = links.map(getMarkdownLink)
+        }
+        return newNode
+      } else {
+        return node
+      }
+    })
   }
 }
 
