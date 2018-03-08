@@ -54,7 +54,6 @@
     "install": "^0.10.4",
     "js-yaml": "^3.11.0",
     "mdast-util-compact": "^1.0.1",
-    "mdast-util-to-string": "^1.0.4",
     "npm": "^5.7.1",
     "remark-frontmatter": "^1.2.0",
     "remark-parse": "^5.0.0",

@@ -3,7 +3,18 @@ const visit = require('unist-util-visit')
 const base = require('../base')
 const questionGap = require('./question-gap')
 
-module.exports = function code () {
+module.exports = function questionCode () {
+  const { Compiler } = this
+
+  if (Compiler) {
+    const { visitors } = Compiler.prototype
+    if (visitors) {
+      visitors.code = function (node) {
+        return `\`\`\`${node.lang}\n${node.value}\n\`\`\``
+      }
+    }
+  }
+
   return transform
 
   function transform (ast) {
@@ -12,7 +23,7 @@ module.exports = function code () {
 
   function parseCode (node) {
     if (node.value.includes('???')) {
-      node.type = 'question-code'
+      node.question = true
       const processor = unified()
         .use(base)
         .use(questionGap)
