@@ -1,7 +1,7 @@
 const jestInCase = require('jest-in-case')
 const fs = require('fs')
 const path = require('path')
-const { parse, parseSync } = require('../index')
+const { getParser } = require('../index')
 
 const folderNames = folderPath =>
   fs
@@ -22,7 +22,7 @@ module.exports.loadFixtures = function loadFixtures (
   if (includeInvalid) {
     return fixtures
   }
-  return fixtures.filter(fixture => !fixture.text.startsWith('invalid'))
+  return fixtures.filter(fixture => !fixture.text.startsWith('fail'))
 }
 
 function loadFile (folderPath = '', name = '') {
@@ -48,25 +48,58 @@ module.exports.loadFixture = function loadFixture (folderPath, folderName) {
   return output
 }
 
-module.exports.createTestParseSync = function createTestParseSync (type) {
+module.exports.createTestParse = function createTestParse (type) {
   jestInCase(
-    `${type}.parseSync`,
-    fixture => {
-      expect(JSON.parse(JSON.stringify(parseSync(type, fixture.text)))).toEqual(
-        fixture.ast
-      )
+    `${type}.parse`,
+    async fixture => {
+      const parser = getParser(type)
+      const ast = await parser.parse(fixture.text, { compact: true })
+      expect(toJSON(ast)).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)
   )
 }
 
-module.exports.createTestParse = function createTestParse (type) {
+module.exports.createTestParseSync = function createTestParseSync (type) {
   jestInCase(
-    `${type}.parse`,
-    async fixture => {
-      const result = await parse(type, fixture.text)
-      expect(JSON.parse(JSON.stringify(result))).toEqual(fixture.ast)
+    `${type}.parseSync`,
+    fixture => {
+      const parser = getParser(type)
+      const ast = parser.parseSync(fixture.text)
+      process.stdout.write(JSON.stringify(ast, null, 2))
+      expect(toJSON(ast)).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)
   )
+}
+
+module.exports.createTestStringify = function createTestStringify (type) {
+  jestInCase(
+    `${type}.stringify`,
+    async fixture => {
+      const parser = getParser(type)
+      const str = await parser.stringify(fixture.ast)
+      expect(str).toEqual(fixture.text)
+    },
+    module.exports.loadFixtures(type)
+  )
+}
+
+module.exports.createTestStringifySync = function createTestStringifySync (
+  type
+) {
+  jestInCase(
+    `${type}.stringifySync`,
+    fixture => {
+      const parser = getParser(type)
+      const str = parser.stringifySync(fixture.ast)
+      process.stdout.write(str)
+      expect(str).toEqual(fixture.text)
+    },
+    module.exports.loadFixtures(type)
+  )
+}
+
+function toJSON (obj) {
+  return JSON.parse(JSON.stringify(obj))
 }
