@@ -27,6 +27,7 @@ module.exports = function section () {
         const processor = unified()
           .use(remarkParse)
           .use(remarkStringify)
+          .use(customThematicBreak)
           .use(question)
 
         return processor.stringify({
@@ -77,5 +78,17 @@ module.exports = function section () {
     }
 
     ast.children = newAstChildren
+  }
+}
+
+function customThematicBreak() {
+  const { Compiler } = this
+  if (Compiler) {
+    const { visitors } = Compiler.prototype
+    if (visitors) {
+      visitors.thematicBreak = function() {
+        return '---'
+      }
+    }
   }
 }
