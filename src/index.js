@@ -1,4 +1,5 @@
 const unified = require('unified')
+const compactAst = require('mdast-util-compact')
 const plugins = require('./plugins')
 
 const types = {
@@ -12,7 +13,7 @@ function getPlugins (type) {
     case types.BASE:
       return [...plugins.base]
     case types.INSIGHT:
-      return [...plugins.base, ...plugins.insight]
+      return [...plugins.base, ...plugins.insight, ...plugins.question]
     case types.QUESTION:
       return [...plugins.base, ...plugins.question]
     default:
@@ -21,22 +22,48 @@ function getPlugins (type) {
 }
 
 function getProcessor (type) {
-  return unified().use(getPlugins(type))
+  const plugins = getPlugins(type)
+  return unified().use(plugins)
 }
 
-function parseSync (type, md) {
-  const processor = getProcessor(type)
-  return processor.runSync(processor.parse(md))
-}
-
-function parse (type, md) {
-  const processor = getProcessor(type)
-  return new Promise((resolve, reject) => {
-    processor.run(processor.parse(md), (err, ast) => {
-      if (err) return reject(err)
-      resolve(ast)
+function getParser (type) {
+  function parse (md, { compact = false } = {}) {
+    const processor = getProcessor(type)
+    return new Promise((resolve, reject) => {
+      processor.run(processor.parse(md), (err, ast) => {
+        if (err) return reject(err)
+        resolve(compact ? compactAst(ast) : ast)
+      })
     })
-  })
+  }
+
+  function parseSync (md, { compact = false } = {}) {
+    const processor = getProcessor(type)
+    const ast = processor.runSync(processor.parse(md))
+    return compact ? compactAst(ast) : ast
+  }
+
+  function stringify (ast) {
+    const processor = getProcessor(type)
+    return new Promise((resolve, reject) => {
+      processor.run(ast, (err, ast) => {
+        if (err) return reject(err)
+        resolve(processor.stringify(ast))
+      })
+    })
+  }
+
+  function stringifySync (ast) {
+    const processor = getProcessor(type)
+    return processor.stringify(ast)
+  }
+
+  return {
+    parse,
+    parseSync,
+    stringify,
+    stringifySync
+  }
 }
 
 module.exports = {
@@ -44,6 +71,5 @@ module.exports = {
   getPlugins,
   types,
   getProcessor,
-  parseSync,
-  parse
+  getParser
 }
