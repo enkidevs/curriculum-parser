@@ -23,7 +23,7 @@ module.exports = function image () {
   function markSvgs (node) {
     const decodedUrl = decode(node.url)
     if (decodedUrl.startsWith('<svg')) {
-      node.isSvg = true
+      node.svg = true
     }
   }
 }
