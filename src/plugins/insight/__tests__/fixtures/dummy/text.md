@@ -10,8 +10,7 @@ links:
 
 # Headline
 
-* * *
-
+---
 ## Content
 
 text with `code`:
@@ -33,8 +32,7 @@ and a table:
 | 2 | b |
 | 3 | c |
 
-* * *
-
+---
 ## Practice
 
 Log the string `"example"`
@@ -48,8 +46,7 @@ console.???('example')
 * `print`
 * `stdout`
 
-* * *
-
+---
 ## Revision
 
 Is the following statement true or false?
@@ -61,8 +58,7 @@ Enki is awesome.
 * true
 * false
 
-* * *
-
+---
 ## Quiz
 
 How are you doing?

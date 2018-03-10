@@ -83,12 +83,12 @@ module.exports = function section () {
   }
 }
 
-function customThematicBreak() {
+function customThematicBreak () {
   const { Compiler } = this
   if (Compiler) {
     const { visitors } = Compiler.prototype
     if (visitors) {
-      visitors.thematicBreak = function() {
+      visitors.thematicBreak = function () {
         return '---'
       }
     }

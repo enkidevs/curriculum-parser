@@ -11,18 +11,14 @@ const folderNames = folderPath =>
 const fixturePath = folderPath =>
   path.join(__dirname, ...folderPath.split('/'), '__tests__', 'fixtures')
 
-module.exports.loadFixtures = function loadFixtures (
-  folderPath,
-  { includeInvalid = false } = {}
-) {
-  const names = folderNames(fixturePath(folderPath))
+module.exports.loadFixtures = function loadFixtures (folderPath) {
+  const names = folderNames(fixturePath(folderPath)).filter(
+    name => name !== 'error'
+  )
   const fixtures = names.map(folderName =>
     module.exports.loadFixture(folderPath, folderName)
   )
-  if (includeInvalid) {
-    return fixtures
-  }
-  return fixtures.filter(fixture => !fixture.text.startsWith('fail'))
+  return fixtures
 }
 
 function loadFile (folderPath = '', name = '') {
@@ -32,6 +28,14 @@ function loadFile (folderPath = '', name = '') {
   } catch (e) {
     return null
   }
+}
+
+module.exports.loadRawFixture = function loadRawFixture ({
+  type: folderPath,
+  file: fileName
+}) {
+  const fp = path.join(fixturePath(folderPath), fileName)
+  return loadFile(fp)
 }
 
 module.exports.loadFixture = function loadFixture (folderPath, folderName) {
@@ -66,7 +70,7 @@ module.exports.createTestParseSync = function createTestParseSync (type) {
     fixture => {
       const parser = getParser(type)
       const ast = parser.parseSync(fixture.text)
-      process.stdout.write(JSON.stringify(ast, null, 2))
+      // process.stdout.write(JSON.stringify(ast, null, 2))
       expect(toJSON(ast)).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)

@@ -20,7 +20,7 @@ module.exports = function image () {
     visit(ast, 'image', markSvgs)
   }
 
-  function markSvgs(node) {
+  function markSvgs (node) {
     const decodedUrl = decode(node.url)
     if (decodedUrl.startsWith('<svg')) {
       node.isSvg = true

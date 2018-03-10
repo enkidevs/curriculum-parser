@@ -1,8 +1,5 @@
 const { loadRawFixture } = require('../../test-utils')
-const {
-  getParser,
-  types
-} = require('../../../index')
+const { getParser, types } = require('../../../index')
 
 describe('Fail insight headline parsing', () => {
   const text = loadRawFixture({
@@ -23,9 +20,9 @@ describe('Fail insight headline parsing', () => {
 
   test('parse should throw on missing headline', () => {
     expect(async () => {
-      await parser.parse(text)
-        .rejects
-        .toThrow(/Must have exactly 1 headline but found \d+ instead./)
+      await parser
+        .parse(text)
+        .rejects.toThrow(/Must have exactly 1 headline but found \d+ instead./)
     })
   })
 })

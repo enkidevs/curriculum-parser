@@ -1,8 +1,5 @@
 const { loadRawFixture } = require('../../test-utils')
-const {
-  getParser,
-  types
-} = require('../../../index')
+const { getParser, types } = require('../../../index')
 
 describe('Fail insight yaml parsing', () => {
   const text = loadRawFixture({
@@ -23,9 +20,11 @@ describe('Fail insight yaml parsing', () => {
 
   test('parse should throw on missing yaml', () => {
     expect(async () => {
-      await parser.parse(text)
-        .rejects
-        .toThrow(/Must have exactly 1 yaml configuration but found \d+ instead./)
+      await parser
+        .parse(text)
+        .rejects.toThrow(
+          /Must have exactly 1 yaml configuration but found \d+ instead./
+        )
     })
   })
 })

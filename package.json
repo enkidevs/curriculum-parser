@@ -51,6 +51,7 @@
     "rimraf": "^2.6.2"
   },
   "dependencies": {
+    "decode-uri-component": "^0.2.0",
     "install": "^0.10.4",
     "js-yaml": "^3.11.0",
     "mdast-util-compact": "^1.0.1",
