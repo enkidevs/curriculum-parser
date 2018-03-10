@@ -70,7 +70,7 @@ module.exports.createTestParseSync = function createTestParseSync (type) {
     fixture => {
       const parser = getParser(type)
       const ast = parser.parseSync(fixture.text)
-      // process.stdout.write(JSON.stringify(ast, null, 2))
+      process.stdout.write(JSON.stringify(ast, null, 2))
       expect(toJSON(ast)).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)

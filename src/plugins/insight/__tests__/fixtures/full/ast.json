@@ -61,20 +61,26 @@
     },
     {
       "type": "headline",
-      "position": {
-        "start": {
-          "line": 22,
-          "column": 1,
-          "offset": 319
-        },
-        "end": {
-          "line": 22,
-          "column": 39,
-          "offset": 357
-        },
-        "indent": []
-      },
-      "value": "Balanced vs. Unbalanced Binary Trees"
+      "value": "Balanced vs. Unbalanced Binary Trees",
+      "children": [
+        {
+          "type": "text",
+          "value": "Balanced vs. Unbalanced Binary Trees",
+          "position": {
+            "start": {
+              "line": 22,
+              "column": 3,
+              "offset": 321
+            },
+            "end": {
+              "line": 22,
+              "column": 39,
+              "offset": 357
+            },
+            "indent": []
+          }
+        }
+      ]
     },
     {
       "type": "section",
@@ -257,7 +263,8 @@
                   "offset": 4665
                 },
                 "indent": []
-              }
+              },
+              "svg": true
             }
           ],
           "position": {
@@ -363,7 +370,8 @@
                   "offset": 8284
                 },
                 "indent": []
-              }
+              },
+              "svg": true
             }
           ],
           "position": {
@@ -1059,6 +1067,82 @@
               "line": 59,
               "column": 116,
               "offset": 9010
+            },
+            "indent": [
+              1
+            ]
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "linkReference",
+              "identifier": "2: red-black tree",
+              "referenceType": "shortcut",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "2: Red-Black tree",
+                  "position": {
+                    "start": {
+                      "line": 61,
+                      "column": 2,
+                      "offset": 9013
+                    },
+                    "end": {
+                      "line": 61,
+                      "column": 19,
+                      "offset": 9030
+                    },
+                    "indent": []
+                  }
+                }
+              ],
+              "position": {
+                "start": {
+                  "line": 61,
+                  "column": 1,
+                  "offset": 9012
+                },
+                "end": {
+                  "line": 61,
+                  "column": 20,
+                  "offset": 9031
+                },
+                "indent": []
+              }
+            },
+            {
+              "type": "text",
+              "value": "\nSelf-balancing binary search tree, in which nodes store an additional bit of data: whether the node is black or red. All of the tree's leaves must be black and, in case of a node being red, its two children must be black.",
+              "position": {
+                "start": {
+                  "line": 61,
+                  "column": 20,
+                  "offset": 9031
+                },
+                "end": {
+                  "line": 62,
+                  "column": 222,
+                  "offset": 9253
+                },
+                "indent": [
+                  1
+                ]
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 61,
+              "column": 1,
+              "offset": 9012
+            },
+            "end": {
+              "line": 62,
+              "column": 222,
+              "offset": 9253
             },
             "indent": [
               1

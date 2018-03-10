@@ -1,4 +1,4 @@
-const visit = require('unist-util-visit')
+const map = require('unist-util-map')
 
 module.exports = function headline () {
   const { Compiler } = this
@@ -15,15 +15,16 @@ module.exports = function headline () {
   return transform
 
   function transform (ast) {
-    visit(ast, 'heading', parseHeadline)
+    return map(ast, parseHeadline)
   }
 
   function parseHeadline (node) {
-    if (node.depth === 1) {
-      node.type = 'headline'
-      node.value = node.children[0].value
-      delete node.depth
-      delete node.children
+    if (node.type === 'heading' && node.depth === 1) {
+      return {
+        type: 'headline',
+        value: node.children[0].value
+      }
     }
+    return node
   }
 }

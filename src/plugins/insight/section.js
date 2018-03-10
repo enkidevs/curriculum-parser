@@ -27,9 +27,11 @@ module.exports = function section () {
         const processor = unified()
           .use(remarkParse)
           .use(remarkStringify, {
-            bullet: '*'
+            bullet: '*',
+            listItemIndent: 1,
+            rule: '-',
+            ruleSpaces: 0
           })
-          .use(customThematicBreak)
           .use(question)
 
         return processor.stringify({
@@ -45,19 +47,15 @@ module.exports = function section () {
   function transform (ast) {
     const newAstChildren = []
     let section, current, next
-    for (let astIndex = 1; astIndex < ast.children.length; astIndex++) {
-      current = ast.children[astIndex - 1]
-      next = ast.children[astIndex]
-
-      if (!current || !next) {
-        break
-      }
+    for (let astIndex = 0; astIndex < ast.children.length; astIndex++) {
+      current = ast.children[astIndex]
+      next = ast.children[astIndex + 1]
 
       if (
         !(
           current.type === 'thematicBreak' &&
-          next.type === 'heading' &&
-          next.depth === 2
+          (next || {}).type === 'heading' &&
+          (next || {}).depth === 2
         )
       ) {
         if (section) {
@@ -79,18 +77,9 @@ module.exports = function section () {
       newAstChildren.push(section)
     }
 
-    ast.children = newAstChildren
-  }
-}
-
-function customThematicBreak () {
-  const { Compiler } = this
-  if (Compiler) {
-    const { visitors } = Compiler.prototype
-    if (visitors) {
-      visitors.thematicBreak = function () {
-        return '---'
-      }
+    return {
+      ...ast,
+      children: newAstChildren
     }
   }
 }

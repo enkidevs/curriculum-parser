@@ -1,5 +1,4 @@
-const visit = require('unist-util-visit')
-const jsYaml = require('js-image')
+const map = require('unist-util-map')
 const decode = require('decode-uri-component')
 
 module.exports = function image () {
@@ -17,13 +16,19 @@ module.exports = function image () {
   return transform
 
   function transform (ast) {
-    visit(ast, 'image', markSvgs)
+    return map(ast, parseImage)
   }
 
-  function markSvgs (node) {
-    const decodedUrl = decode(node.url)
-    if (decodedUrl.startsWith('<svg')) {
-      node.svg = true
+  function parseImage (node) {
+    if (node.type === 'image') {
+      const decodedUrl = decode(node.url)
+      if (decodedUrl.startsWith('<svg')) {
+        return {
+          ...node,
+          svg: true
+        }
+      }
     }
+    return node
   }
 }

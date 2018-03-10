@@ -1,5 +1,5 @@
 const unified = require('unified')
-const visit = require('unist-util-visit')
+const map = require('unist-util-map')
 const base = require('../base')
 const questionGap = require('./question-gap')
 
@@ -18,17 +18,21 @@ module.exports = function questionCode () {
   return transform
 
   function transform (ast) {
-    visit(ast, 'code', parseCode)
+    return map(ast, parseCode)
   }
 
   function parseCode (node) {
-    if (node.value.includes('???')) {
-      node.question = true
+    if (node.type === 'code' && node.value.includes('???')) {
       const processor = unified()
         .use(base)
         .use(questionGap)
       const ast = processor.runSync(processor.parse(node.value))
-      node.children = ast.children
+      return {
+        ...node,
+        question: true,
+        children: ast.children
+      }
     }
+    return node
   }
 }
