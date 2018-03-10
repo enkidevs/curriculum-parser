@@ -12,7 +12,18 @@
 
 ## API
 
-TODO
+```js
+const {
+  types,
+  getParser
+} = require('@enkidevs/curriculum-parser')
+
+const parser = getParser(types.INSIGHT)
+
+const ast = parser.parseSync('some markdown string') // or vfile(/path/to/markdown-file)
+
+const markdownString = parser.stringifySync(ast)  // we get back the markdown string
+```
 
 ## Usage
 
