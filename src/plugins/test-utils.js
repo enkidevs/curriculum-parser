@@ -49,6 +49,10 @@ module.exports.loadFixture = function loadFixture (folderPath, folderName) {
   if (astFile) {
     output.ast = JSON.parse(astFile)
   }
+  const stringifiedFile = loadFile(fp, 'stringified.md')
+  if (stringifiedFile) {
+    output.stringified = stringifiedFile.toString()
+  }
   return output
 }
 
@@ -70,7 +74,6 @@ module.exports.createTestParseSync = function createTestParseSync (type) {
     fixture => {
       const parser = getParser(type)
       const ast = parser.parseSync(fixture.text)
-      process.stdout.write(JSON.stringify(ast, null, 2))
       expect(toJSON(ast)).toEqual(fixture.ast)
     },
     module.exports.loadFixtures(type)
@@ -83,7 +86,7 @@ module.exports.createTestStringify = function createTestStringify (type) {
     async fixture => {
       const parser = getParser(type)
       const str = await parser.stringify(fixture.ast)
-      expect(str).toEqual(fixture.text)
+      expect(str).toEqual(fixture.stringified)
     },
     module.exports.loadFixtures(type)
   )
@@ -97,8 +100,7 @@ module.exports.createTestStringifySync = function createTestStringifySync (
     fixture => {
       const parser = getParser(type)
       const str = parser.stringifySync(fixture.ast)
-      process.stdout.write(str)
-      expect(str).toEqual(fixture.text)
+      expect(str).toEqual(fixture.stringified)
     },
     module.exports.loadFixtures(type)
   )

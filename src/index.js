@@ -1,5 +1,6 @@
 const unified = require('unified')
 const compactAst = require('mdast-util-compact')
+const remarkStringify = require('remark-stringify')
 const plugins = require('./plugins')
 
 const types = {
@@ -8,21 +9,26 @@ const types = {
   QUESTION: 'question'
 }
 
-function getPlugins (type) {
+function getPlugins (type, postBasePlugins = []) {
   switch (type) {
     case types.BASE:
-      return [...plugins.base]
+      return [...plugins.base, ...postBasePlugins]
     case types.INSIGHT:
-      return [...plugins.base, ...plugins.insight, ...plugins.question]
+      return [
+        ...plugins.base,
+        ...postBasePlugins,
+        ...plugins.insight,
+        ...plugins.question
+      ]
     case types.QUESTION:
-      return [...plugins.base, ...plugins.question]
+      return [...plugins.base, ...postBasePlugins, ...plugins.question]
     default:
       throw `Invalid type ${type}`
   }
 }
 
-function getProcessor (type) {
-  const plugins = getPlugins(type)
+function getProcessor (type, postBasePlugins) {
+  const plugins = getPlugins(type, postBasePlugins)
   return unified().use(plugins)
 }
 
@@ -44,7 +50,7 @@ function getParser (type) {
   }
 
   function stringify (ast) {
-    const processor = getProcessor(type)
+    const processor = getProcessor(type, [remarkStringify])
     return new Promise((resolve, reject) => {
       processor.run(ast, (err, ast) => {
         if (err) return reject(err)
@@ -54,7 +60,7 @@ function getParser (type) {
   }
 
   function stringifySync (ast) {
-    const processor = getProcessor(type)
+    const processor = getProcessor(type, [remarkStringify])
     return processor.stringify(ast)
   }
 

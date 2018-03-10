@@ -30,7 +30,7 @@ module.exports = function section () {
             bullet: '*',
             listItemIndent: 1,
             rule: '-',
-            ruleSpaces: 0
+            ruleSpaces: false
           })
           .use(question)
 
