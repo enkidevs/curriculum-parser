@@ -1,3 +1,5 @@
+# This repo is deprecated. The parser is moved to [https://github.com/enkidevs/curriculum-processors](https://github.com/enkidevs/curriculum-processors)
+
 # Enki Curriculum Parser
 
 ## Resources
